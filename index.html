@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amruta Fashion Designer - Mobile Invoice App</title>
     
-    <!-- PWA Manifest Link -->
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Amruta%20Fashion%20Designer%20Invoice%22%2C%22short_name%22%3A%22Amruta%20Invoice%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%234f46e5%22%2C%22icons%22%3A%5B%5D%7D">
+    <!-- App Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Amruta Invoice">
     <meta name="theme-color" content="#4f46e5">
 
     <!-- Google Fonts -->
@@ -416,7 +419,7 @@ KARAD, MAHARASHTRA 415124</p>
             window.print();
         });
 
-        // WhatsApp Share Handler (Flexible Sharing to anyone)
+        // WhatsApp Share Handler (Flexible sharing to anyone)
         document.getElementById('whatsappBtn').addEventListener('click', () => {
             const companyName = document.getElementById('invCompany').value;
             const companyAddress = document.getElementById('invAddress').value;
