@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amruta Fashion Designer - Mobile Invoice Generator</title>
+    <title>Amruta Fashion Designer - Mobile Invoice App</title>
+    
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Amruta%20Fashion%20Designer%20Invoice%22%2C%22short_name%22%3A%22Amruta%20Invoice%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%234f46e5%22%2C%22icons%22%3A%5B%5D%7D">
+    <meta name="theme-color" content="#4f46e5">
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
@@ -37,7 +42,6 @@
             border-top: 6px solid #4f46e5;
         }
         
-        /* Mobile Specific Touches */
         @media (max-width: 576px) {
             .invoice-preview {
                 padding: 1.5rem !important;
@@ -137,13 +141,13 @@ KARAD, MAHARASHTRA 415124</textarea>
 
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted text-uppercase">Customer Name (Optional)</label>
-                        <input type="text" id="invClientName" class="form-control rounded-3" placeholder="e.g. Acme Corporation">
+                        <input type="text" id="invClientName" class="form-control rounded-3" placeholder="e.g. Priya Sharma">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label small fw-semibold text-muted text-uppercase">Customer Phone Number (Optional)</label>
-                        <input type="tel" id="invClientPhone" class="form-control rounded-3" placeholder="e.g. +91 91234 56789">
-                        <div class="form-text small">Include country code for WhatsApp (e.g., +918421...).</div>
+                        <input type="tel" id="invClientPhone" class="form-control rounded-3" placeholder="Leave blank to choose contact on WhatsApp">
+                        <div class="form-text small text-primary">💡 Leave blank if you want WhatsApp to let you pick any contact or group manually.</div>
                     </div>
                 </div>
 
@@ -195,7 +199,7 @@ KARAD, MAHARASHTRA 415124</p>
                             </div>
                         </div>
 
-                        <!-- Bill To Section (Only shows if customer fields have values) -->
+                        <!-- Bill To Section -->
                         <div class="mb-4 bg-light p-3 rounded-3 border" id="clientSection" style="display: none;">
                             <h6 class="text-uppercase small fw-bold text-muted mb-1">Billed To:</h6>
                             <h5 id="previewClientName" class="fw-bold text-dark mb-1 fs-6"></h5>
@@ -412,7 +416,7 @@ KARAD, MAHARASHTRA 415124</p>
             window.print();
         });
 
-        // WhatsApp Share Handler
+        // WhatsApp Share Handler (Flexible Sharing to anyone)
         document.getElementById('whatsappBtn').addEventListener('click', () => {
             const companyName = document.getElementById('invCompany').value;
             const companyAddress = document.getElementById('invAddress').value;
@@ -425,7 +429,7 @@ KARAD, MAHARASHTRA 415124</p>
             // Calculate current total
             let grandTotal = items.reduce((acc, item) => acc + (item.qty * item.price), 0);
 
-            // Clean up phone number format for WhatsApp link
+            // Clean up phone number format if provided
             clientPhone = clientPhone.replace(/[^0-9+]/g, '');
 
             // Construct message text
@@ -443,8 +447,8 @@ KARAD, MAHARASHTRA 415124</p>
             // Encode message for URL
             const encodedMessage = encodeURIComponent(message);
             
-            // Build WhatsApp URL
-            let whatsappUrl = `https://wa.me/${clientPhone}?text=${encodedMessage}`;
+            // If phone is left blank, open general WhatsApp share to choose any contact. If phone is provided, opens direct chat.
+            let whatsappUrl = clientPhone ? `https://wa.me/${clientPhone}?text=${encodedMessage}` : `https://api.whatsapp.com/send?text=${encodedMessage}`;
             
             window.open(whatsappUrl, '_blank');
         });
