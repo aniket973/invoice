@@ -1,462 +1,340 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amruta Fashion Designer - Mobile Invoice App</title>
-    
-    <!-- App Meta Tags -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Amruta Invoice">
-    <meta name="theme-color" content="#4f46e5">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#4f46e5">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Amruta Invoice">
+<title>Amruta Fashion Designer - Invoice Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #334155;
-        }
-        .card {
-            border: none;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-        }
-        .form-control {
-            border-color: #cbd5e1;
-            padding: 0.65rem 0.9rem;
-            font-size: 0.95rem;
-        }
-        .form-control:focus {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-        .invoice-preview {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
-            border-top: 6px solid #4f46e5;
-        }
-        
-        @media (max-width: 576px) {
-            .invoice-preview {
-                padding: 1.5rem !important;
-            }
-            .fs-mobile-title {
-                font-size: 1.25rem !important;
-            }
-            .btn-action-lg {
-                font-size: 1rem !important;
-                padding: 0.75rem 1rem !important;
-            }
-        }
+<!-- A data-URL manifest keeps this deliverable to one HTML file.
+     Browser support for data-URL manifests varies; see installation note below. -->
+<script>
+(() => {
+  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <rect width="512" height="512" rx="100" fill="#4f46e5"/>
+    <path d="M145 95h222v322l-37-22-37 22-37-22-37 22-37-22-37 22z" fill="#fff"/>
+    <path d="M190 165h132M190 220h132M190 275h85" stroke="#4f46e5" stroke-width="20" stroke-linecap="round"/>
+    <path d="M190 340h132" stroke="#c7d2fe" stroke-width="15" stroke-linecap="round"/>
+  </svg>`;
+  const icon = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(iconSvg);
+  const manifest = {
+    name: "Amruta Fashion Designer Invoice",
+    short_name: "Amruta Invoice",
+    start_url: "./",
+    display: "standalone",
+    background_color: "#f8fafc",
+    theme_color: "#4f46e5",
+    icons: [{src: icon, sizes: "any", type: "image/svg+xml", purpose: "any"}]
+  };
+  const link = document.createElement("link");
+  link.rel = "manifest";
+  link.href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
+  document.head.appendChild(link);
+})();
+</script>
 
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printable-invoice, #printable-invoice * {
-                visibility: visible;
-            }
-            #printable-invoice {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                box-shadow: none !important;
-                border: none !important;
-                border-top: 6px solid #4f46e5 !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-        }
-    </style>
+<style>
+:root{--brand:#4f46e5;--ink:#1e293b;--muted:#64748b}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,sans-serif;background:#f1f5f9;color:#334155}
+.card{border:0;box-shadow:0 5px 20px #0f172a0b}
+.form-control{border-color:#cbd5e1;padding:.68rem .85rem}
+.form-control:focus{border-color:var(--brand);box-shadow:0 0 0 3px #4f46e51c}
+.invoice-preview{background:#fff;border-radius:14px;border-top:6px solid var(--brand);box-shadow:0 10px 30px #0f172a12}
+.brand-text{color:var(--brand)}
+.item-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px}
+.table th{font-size:.75rem;color:#64748b;white-space:nowrap}
+.table td{font-size:.88rem}
+.sticky-preview{position:sticky;top:16px}
+.small-label{font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:991px){.sticky-preview{position:static}}
+@media(max-width:576px){
+ .container{padding-left:12px;padding-right:12px}
+ .invoice-preview{padding:18px!important}
+ .invoice-preview h3{font-size:1.05rem}
+ .invoice-preview .table td,.invoice-preview .table th{padding:.45rem .3rem;font-size:.72rem}
+ .action-btn{padding:.8rem;font-size:.95rem}
+}
+@media print{
+ @page{size:auto;margin:12mm}
+ body{background:#fff!important}
+ body *{visibility:hidden!important}
+ #printable-invoice,#printable-invoice *{visibility:visible!important}
+ #printable-invoice{position:absolute;left:0;top:0;width:100%;border:0!important;border-top:5px solid var(--brand)!important;box-shadow:none!important;border-radius:0!important;padding:0!important}
+ .no-print{display:none!important}
+}
+</style>
 </head>
 <body>
+<div class="container py-4 py-md-5">
+  <header class="text-center mb-4">
+    <div class="d-inline-flex align-items-center justify-content-center rounded-4 mb-2" style="width:48px;height:48px;background:#e0e7ff;color:#4f46e5;font-size:24px"><i class="bi bi-receipt-cutoff"></i></div>
+    <h1 class="h3 fw-bold text-dark mb-1">Amruta Fashion Designer</h1>
+    <p class="text-secondary mb-0 small">Invoice Generator · Create, print and share invoices</p>
+  </header>
 
-    <div class="container py-4 py-md-5">
-        <div class="text-center mb-4 mb-md-5">
-            <h1 class="fw-bold text-dark fs-4 fs-md-3 fs-mobile-title">
-                <i class="bi bi-receipt text-indigo me-2" style="color: #4f46e5;"></i>Amruta Fashion Designer Invoice Generator
-            </h1>
-            <p class="text-muted small fs-md-6 mb-0">Create clean mobile invoices & share directly on WhatsApp.</p>
+  <div class="row g-4 align-items-start">
+    <section class="col-lg-5 no-print">
+      <div class="card rounded-4 p-3 p-sm-4 mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+          <h2 class="h6 fw-bold mb-0">Business information</h2>
+          <button class="btn btn-sm btn-outline-primary rounded-pill" id="toggleBusiness" type="button"><i class="bi bi-pencil-square me-1"></i>Edit</button>
         </div>
-
-        <div class="row g-4 align-items-start">
-            
-            <!-- LEFT COLUMN: Input Form Controls -->
-            <div class="col-lg-5 no-print">
-                <div class="card rounded-4 p-3 p-sm-4 mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <h5 class="fw-bold text-dark m-0 fs-6 fs-sm-5">Business Info</h5>
-                        <button type="button" id="toggleBusinessInfoBtn" class="btn btn-sm btn-outline-primary rounded-pill">
-                            <i class="bi bi-pencil-square me-1"></i> Edit Business Info
-                        </button>
-                    </div>
-
-                    <!-- Collapsible Container for Business Details -->
-                    <div id="businessInfoFields" style="display: none;">
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold text-muted text-uppercase">Your Company Name</label>
-                            <input type="text" id="invCompany" class="form-control rounded-3" value="Amruta Fashion Designer">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold text-muted text-uppercase">Company Address</label>
-                            <textarea id="invAddress" class="form-control rounded-3" rows="3">Anand electronics
+        <div id="businessFields" hidden>
+          <label class="small-label mb-1" for="company">Business name</label>
+          <input class="form-control mb-3" id="company" value="Amruta Fashion Designer">
+          <label class="small-label mb-1" for="address">Address</label>
+          <textarea class="form-control mb-3" id="address" rows="3">Anand electronics
 Kalyani Marathi medium school
 KARAD, MAHARASHTRA 415124</textarea>
-                        </div>
+          <label class="small-label mb-1" for="companyPhone">Phone number</label>
+          <input class="form-control mb-3" id="companyPhone" type="tel" value="8421969409">
+          <label class="small-label mb-1" for="instagram">Instagram ID</label>
+          <input class="form-control mb-2" id="instagram" value="amruta_fashion_designerr">
+        </div>
+        <div class="row g-2 mt-1">
+          <div class="col-6"><label class="small-label mb-1" for="invoiceNo">Invoice number</label><input class="form-control" id="invoiceNo" value="INV-2026-001"></div>
+          <div class="col-6"><label class="small-label mb-1" for="invoiceDate">Date</label><input class="form-control" id="invoiceDate" type="date"></div>
+        </div>
+      </div>
 
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold text-muted text-uppercase">Company Phone Number</label>
-                            <input type="text" id="invCompanyPhone" class="form-control rounded-3" value="8421969409">
-                        </div>
+      <div class="card rounded-4 p-3 p-sm-4 mb-3">
+        <h2 class="h6 fw-bold mb-3 pb-2 border-bottom">Customer information <span class="text-secondary fw-normal">(optional)</span></h2>
+        <label class="small-label mb-1" for="clientName">Customer name</label>
+        <input class="form-control mb-3" id="clientName" placeholder="e.g. Priya Sharma">
+        <label class="small-label mb-1" for="clientPhone">Customer WhatsApp number</label>
+        <input class="form-control" id="clientPhone" type="tel" placeholder="e.g. 919876543210">
+        <div class="form-text">Include country code for direct WhatsApp sharing. Leave blank to choose a contact manually.</div>
+      </div>
 
-                        <div class="mb-3">
-                            <label class="form-label small fw-semibold text-muted text-uppercase">Instagram ID / Handle</label>
-                            <input type="text" id="invInstagram" class="form-control rounded-3" value="amruta_fashion_designerr">
-                        </div>
-                    </div>
+      <div class="card rounded-4 p-3 p-sm-4 mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+          <h2 class="h6 fw-bold mb-0">Items / services</h2>
+          <button class="btn btn-sm btn-outline-primary rounded-pill" id="addItem" type="button"><i class="bi bi-plus-lg me-1"></i>Add item</button>
+        </div>
+        <div id="itemsEditor"></div>
+      </div>
 
-                    <div class="row mt-2 g-2">
-                        <div class="col-6 mb-2">
-                            <label class="form-label small fw-semibold text-muted text-uppercase">Invoice No.</label>
-                            <input type="text" id="invNumber" class="form-control rounded-3" value="INV-2026-001">
-                        </div>
-                        <div class="col-6 mb-2">
-                            <label class="form-label small fw-semibold text-muted text-uppercase">Date</label>
-                            <input type="date" id="invDate" class="form-control rounded-3">
-                        </div>
-                    </div>
-                </div>
+      <div class="d-grid gap-2">
+        <button class="btn btn-dark btn-lg rounded-pill fw-semibold action-btn" id="printButton" type="button"><i class="bi bi-printer me-2"></i>Print / Save as PDF</button>
+        <button class="btn btn-success btn-lg rounded-pill fw-semibold action-btn" id="whatsappButton" type="button" style="background:#25d366;border-color:#25d366"><i class="bi bi-whatsapp me-2"></i>Send to WhatsApp</button>
+        <button class="btn btn-outline-secondary rounded-pill" id="clearButton" type="button"><i class="bi bi-arrow-counterclockwise me-1"></i>Reset invoice items</button>
+      </div>
+      <p class="small text-secondary text-center mt-3 mb-0"><i class="bi bi-shield-check me-1"></i>Invoice details are saved in this browser on this device.</p>
+    </section>
 
-                <div class="card rounded-4 p-3 p-sm-4 mb-4">
-                    <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom fs-6 fs-sm-5">Customer / Client Info (Optional)</h5>
-
-                    <div class="mb-3">
-                        <label class="form-label small fw-semibold text-muted text-uppercase">Customer Name (Optional)</label>
-                        <input type="text" id="invClientName" class="form-control rounded-3" placeholder="e.g. Priya Sharma">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label small fw-semibold text-muted text-uppercase">Customer Phone Number (Optional)</label>
-                        <input type="tel" id="invClientPhone" class="form-control rounded-3" placeholder="Leave blank to choose contact on WhatsApp">
-                        <div class="form-text small text-primary">💡 Leave blank if you want WhatsApp to let you pick any contact or group manually.</div>
-                    </div>
-                </div>
-
-                <!-- Line Items Editor Card -->
-                <div class="card rounded-4 p-3 p-sm-4 mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <h5 class="fw-bold text-dark m-0 fs-6 fs-sm-5">Line Items</h5>
-                        <button type="button" id="addRowBtn" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-plus-lg"></i> Add Item</button>
-                    </div>
-
-                    <div id="itemsFormList">
-                        <!-- Dynamic items injected here -->
-                    </div>
-                </div>
-
-                <div class="d-grid gap-2">
-                    <button type="button" id="printBtn" class="btn btn-dark btn-lg rounded-pill fw-semibold btn-action-lg py-3 shadow-sm">
-                        <i class="bi bi-printer me-2"></i> Print / Save as PDF
-                    </button>
-                    <button type="button" id="whatsappBtn" class="btn btn-success btn-lg rounded-pill fw-semibold btn-action-lg py-3 shadow-sm" style="background-color: #25d366; border-color: #25d366;">
-                        <i class="bi bi-whatsapp me-2"></i> Send to WhatsApp
-                    </button>
-                </div>
-            </div>
-
-            <!-- RIGHT COLUMN: Live Invoice Preview -->
-            <div class="col-lg-7">
-                <div class="sticky-top" style="top: 1.5rem;">
-                    <div class="d-flex justify-content-between align-items-center mb-2 no-print">
-                        <span class="small fw-bold text-uppercase text-muted tracking-wider">Live Preview</span>
-                        <span class="badge bg-indigo text-white px-2 py-1 rounded-pill" style="background-color: #4f46e5; font-size: 0.75rem;">Instant Update</span>
-                    </div>
-                    
-                    <div id="printable-invoice" class="invoice-preview p-4 p-sm-5">
-                        <!-- Top Header -->
-                        <div class="row justify-content-between align-items-start border-bottom pb-4 mb-4 g-3">
-                            <div class="col-7">
-                                <h3 id="previewCompany" class="fw-bold text-dark m-0 fs-5 fs-sm-3">Amruta Fashion Designer</h3>
-                                <p id="previewAddress" class="text-muted small mb-1" style="white-space: pre-line;">Anand electronics
+    <section class="col-lg-7">
+      <div class="sticky-preview">
+        <div class="d-flex justify-content-between align-items-center mb-2 no-print">
+          <span class="small-label">Live invoice preview</span><span class="badge rounded-pill text-bg-primary">Instant update</span>
+        </div>
+        <article id="printable-invoice" class="invoice-preview p-4 p-sm-5">
+          <div class="row g-3 justify-content-between border-bottom pb-4 mb-4">
+            <div class="col-7">
+              <h3 class="fw-bold text-dark mb-2" id="pCompany">Amruta Fashion Designer</h3>
+              <p class="text-secondary small mb-1" id="pAddress" style="white-space:pre-line">Anand electronics
 Kalyani Marathi medium school
 KARAD, MAHARASHTRA 415124</p>
-                                <p class="mb-0 text-muted small">Phone: <span id="previewCompanyPhone" class="fw-semibold text-dark">8421969409</span></p>
-                                <p class="mb-0 text-muted small">Instagram: <span id="previewInstagram" class="fw-semibold text-dark">amruta_fashion_designerr</span></p>
-                            </div>
-                            <div class="col-5 text-end">
-                                <h4 class="fw-bold text-uppercase text-secondary m-0 fs-6 fs-sm-4">INVOICE</h4>
-                                <p class="mb-0 small text-muted">Invoice #: <span id="previewNumber" class="fw-semibold text-dark">INV-2026-001</span></p>
-                                <p class="mb-0 small text-muted">Date: <span id="previewDate" class="fw-semibold text-dark"></span></p>
-                            </div>
-                        </div>
-
-                        <!-- Bill To Section -->
-                        <div class="mb-4 bg-light p-3 rounded-3 border" id="clientSection" style="display: none;">
-                            <h6 class="text-uppercase small fw-bold text-muted mb-1">Billed To:</h6>
-                            <h5 id="previewClientName" class="fw-bold text-dark mb-1 fs-6"></h5>
-                            <p id="previewClientPhone" class="mb-0 small text-secondary"></p>
-                        </div>
-
-                        <!-- Line Items Table -->
-                        <div class="table-responsive mb-4">
-                            <table class="table align-middle">
-                                <thead class="table-light text-uppercase fs-7">
-                                    <tr>
-                                        <th style="width: 45%;">Description</th>
-                                        <th class="text-center" style="width: 15%;">Qty</th>
-                                        <th class="text-end" style="width: 20%;">Price (₹)</th>
-                                        <th class="text-end" style="width: 20%;">Total (₹)</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="previewTableBody">
-                                    <!-- Dynamic rows injected here -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Totals Section -->
-                        <div class="row justify-content-end border-top pt-3">
-                            <div class="col-8 col-sm-6 col-md-5">
-                                <div class="d-flex justify-content-between border-top pt-2 mt-2">
-                                    <span class="fw-bold text-dark">Grand Total:</span>
-                                    <span id="previewGrandTotal" class="fw-bold text-primary fs-5" style="color: #4f46e5 !important;">₹0.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Footer Note -->
-                        <div class="mt-4 pt-3 border-top text-center text-muted small">
-                            <p class="mb-0"><em>Thank you for your business! Connect with us on Instagram <span id="footerInsta">amruta_fashion_designerr</span></em></p>
-                        </div>
-                    </div>
-                </div>
+              <p class="small text-secondary mb-1">Phone: <strong class="text-dark" id="pCompanyPhone">8421969409</strong></p>
+              <p class="small text-secondary mb-0">Instagram: <strong class="text-dark" id="pInstagram">amruta_fashion_designerr</strong></p>
             </div>
+            <div class="col-5 text-end">
+              <div class="fw-bold text-secondary">INVOICE</div>
+              <div class="small text-secondary mt-2">Invoice #: <strong class="text-dark" id="pInvoiceNo"></strong></div>
+              <div class="small text-secondary">Date: <strong class="text-dark" id="pDate"></strong></div>
+            </div>
+          </div>
+          <div id="billTo" class="rounded-3 border bg-light p-3 mb-4" hidden>
+            <div class="small-label mb-1">Billed to</div>
+            <div class="fw-bold text-dark" id="pClientName"></div>
+            <div class="small text-secondary" id="pClientPhone"></div>
+          </div>
+          <div class="table-responsive mb-4">
+            <table class="table align-middle">
+              <thead class="table-light"><tr><th>Description</th><th class="text-center">Qty</th><th class="text-end">Price (₹)</th><th class="text-end">Total (₹)</th></tr></thead>
+              <tbody id="previewItems"></tbody>
+            </table>
+          </div>
+          <div class="row justify-content-end border-top pt-3">
+            <div class="col-9 col-sm-7 col-md-6">
+              <div class="d-flex justify-content-between align-items-center pt-2">
+                <strong class="text-dark">Grand Total</strong><strong class="brand-text fs-5" id="grandTotal">₹0.00</strong>
+              </div>
+            </div>
+          </div>
+          <footer class="mt-5 pt-3 border-top text-center text-secondary small">
+            <em>Thank you for your business! Connect with us on Instagram <strong id="pFooterInstagram">amruta_fashion_designerr</strong></em>
+          </footer>
+        </article>
+      </div>
+    </section>
+  </div>
+</div>
 
+<script>
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const STORAGE_KEY = "amrutaInvoiceDataV1";
+  const defaultItems = [
+    {desc:"Designer Outfit Customization", qty:1, price:3500},
+    {desc:"Embroidery & Alteration", qty:1, price:1200}
+  ];
+  let items = defaultItems.map(x => ({...x}));
+
+  const today = new Date();
+  const localDate = new Date(today.getTime() - today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  $("invoiceDate").value = localDate;
+
+  function money(value) {
+    return Number(value || 0).toLocaleString("en-IN", {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, ch => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    })[ch]);
+  }
+  function getData() {
+    return {
+      company:$("company").value, address:$("address").value,
+      companyPhone:$("companyPhone").value, instagram:$("instagram").value,
+      invoiceNo:$("invoiceNo").value, invoiceDate:$("invoiceDate").value,
+      clientName:$("clientName").value, clientPhone:$("clientPhone").value,
+      items
+    };
+  }
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(getData())); }
+    catch(e) { console.warn("Could not save invoice data", e); }
+  }
+  function load() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (!data) return;
+      ["company","address","companyPhone","instagram","invoiceNo","invoiceDate","clientName","clientPhone"].forEach(key => {
+        if (data[key] !== undefined) $(key).value = data[key];
+      });
+      if (Array.isArray(data.items) && data.items.length) {
+        items = data.items.map(item => ({
+          desc:String(item.desc ?? ""),
+          qty:Math.max(0, Number(item.qty) || 0),
+          price:Math.max(0, Number(item.price) || 0)
+        }));
+      }
+    } catch(e) { console.warn("Saved invoice data could not be loaded", e); }
+  }
+  function render() {
+    $("itemsEditor").innerHTML = items.map((item,index) => `
+      <div class="item-card">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="small fw-bold text-secondary">ITEM ${index+1}</span>
+          ${items.length > 1 ? `<button type="button" class="btn btn-sm btn-link text-danger p-0 remove-item" data-index="${index}" aria-label="Remove item"><i class="bi bi-trash"></i> Remove</button>` : ""}
         </div>
-    </div>
+        <label class="small-label mb-1" for="desc-${index}">Description</label>
+        <input id="desc-${index}" class="form-control mb-2 item-desc" data-index="${index}" value="${escapeHTML(item.desc)}">
+        <div class="row g-2">
+          <div class="col-6"><label class="small-label mb-1" for="qty-${index}">Quantity</label><input id="qty-${index}" class="form-control item-qty" data-index="${index}" type="number" min="0" step="1" value="${item.qty}"></div>
+          <div class="col-6"><label class="small-label mb-1" for="price-${index}">Unit price (₹)</label><input id="price-${index}" class="form-control item-price" data-index="${index}" type="number" min="0" step="0.01" value="${item.price}"></div>
+        </div>
+      </div>`).join("");
 
-    <!-- JavaScript Logic -->
-    <script>
-        const dateInput = document.getElementById('invDate');
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-        document.getElementById('previewDate').innerText = today;
+    $("previewItems").innerHTML = items.map(item => {
+      const total = item.qty * item.price;
+      return `<tr><td>${escapeHTML(item.desc) || '<em>Unnamed item</em>'}</td><td class="text-center">${item.qty}</td><td class="text-end">₹${money(item.price)}</td><td class="text-end fw-semibold">₹${money(total)}</td></tr>`;
+    }).join("");
+    const total = items.reduce((sum,item) => sum + item.qty*item.price, 0);
+    $("grandTotal").textContent = "₹" + money(total);
 
-        let items = [
-            { desc: 'Designer Outfit Customization', qty: 1, price: 3500 },
-            { desc: 'Embroidery & Alteration', qty: 1, price: 1200 }
-        ];
+    $("pCompany").textContent = $("company").value;
+    $("pAddress").textContent = $("address").value;
+    $("pCompanyPhone").textContent = $("companyPhone").value;
+    $("pInstagram").textContent = $("instagram").value;
+    $("pFooterInstagram").textContent = $("instagram").value;
+    $("pInvoiceNo").textContent = $("invoiceNo").value;
+    $("pDate").textContent = $("invoiceDate").value;
+    const hasClient = $("clientName").value.trim() || $("clientPhone").value.trim();
+    $("billTo").hidden = !hasClient;
+    $("pClientName").textContent = $("clientName").value;
+    $("pClientPhone").textContent = $("clientPhone").value;
+    save();
+  }
 
-        const itemsFormList = document.getElementById('itemsFormList');
-        const previewTableBody = document.getElementById('previewTableBody');
+  $("itemsEditor").addEventListener("input", event => {
+    const index = Number(event.target.dataset.index);
+    if (!Number.isInteger(index) || !items[index]) return;
+    if (event.target.classList.contains("item-desc")) items[index].desc = event.target.value;
+    if (event.target.classList.contains("item-qty")) items[index].qty = Math.max(0, Number(event.target.value) || 0);
+    if (event.target.classList.contains("item-price")) items[index].price = Math.max(0, Number(event.target.value) || 0);
+    renderPreviewOnly();
+    save();
+  });
+  $("itemsEditor").addEventListener("click", event => {
+    const button = event.target.closest(".remove-item");
+    if (!button) return;
+    items.splice(Number(button.dataset.index),1);
+    render();
+  });
+  function renderPreviewOnly() {
+    $("previewItems").innerHTML = items.map(item => {
+      const total = item.qty*item.price;
+      return `<tr><td>${escapeHTML(item.desc) || '<em>Unnamed item</em>'}</td><td class="text-center">${item.qty}</td><td class="text-end">₹${money(item.price)}</td><td class="text-end fw-semibold">₹${money(total)}</td></tr>`;
+    }).join("");
+    $("grandTotal").textContent = "₹" + money(items.reduce((sum,item)=>sum+item.qty*item.price,0));
+  }
+  ["company","address","companyPhone","instagram","invoiceNo","invoiceDate","clientName","clientPhone"].forEach(id => {
+    $(id).addEventListener("input", render);
+    $(id).addEventListener("change", render);
+  });
 
-        function renderApp() {
-            itemsFormList.innerHTML = '';
-            previewTableBody.innerHTML = '';
-            let grandTotal = 0;
+  $("addItem").addEventListener("click", () => {
+    items.push({desc:"New Service Item",qty:1,price:0});
+    render();
+    const inputs = $("itemsEditor").querySelectorAll(".item-desc");
+    inputs[inputs.length-1].focus();
+  });
+  $("toggleBusiness").addEventListener("click", () => {
+    const fields = $("businessFields");
+    fields.hidden = !fields.hidden;
+    $("toggleBusiness").innerHTML = fields.hidden
+      ? '<i class="bi bi-pencil-square me-1"></i>Edit'
+      : '<i class="bi bi-eye-slash me-1"></i>Hide';
+  });
+  $("printButton").addEventListener("click", () => window.print());
+  $("clearButton").addEventListener("click", () => {
+    if (!confirm("Reset all invoice items to the sample items?")) return;
+    items = defaultItems.map(x=>({...x}));
+    render();
+  });
+  $("whatsappButton").addEventListener("click", () => {
+    const total = items.reduce((sum,item)=>sum+item.qty*item.price,0);
+    const lines = [
+      "*" + ($("company").value || "Invoice") + "*",
+      "Invoice: " + $("invoiceNo").value,
+      "Date: " + $("invoiceDate").value
+    ];
+    if ($("clientName").value.trim()) lines.push("Customer: " + $("clientName").value.trim());
+    lines.push("", "*Invoice details*");
+    items.forEach((item,index) => {
+      lines.push(`${index+1}. ${item.desc || "Item"} | Qty: ${item.qty} | ₹${money(item.price)} | Total: ₹${money(item.qty*item.price)}`);
+    });
+    lines.push("", "*Grand Total: ₹" + money(total) + "*", "", "Thank you for your business!");
+    const phone = $("clientPhone").value.replace(/\D/g,"");
+    const url = phone
+      ? "https://wa.me/" + phone + "?text=" + encodeURIComponent(lines.join("\n"))
+      : "https://wa.me/?text=" + encodeURIComponent(lines.join("\n"));
+    window.open(url,"_blank","noopener,noreferrer");
+  });
 
-            items.forEach((item, index) => {
-                let itemTotal = item.qty * item.price;
-                grandTotal += itemTotal;
-
-                itemsFormList.innerHTML += `
-                    <div class="border rounded-3 p-3 mb-3 bg-light position-relative">
-                        <div class="mb-2">
-                            <label class="form-label small fw-semibold text-muted">Item Description</label>
-                            <input type="text" class="form-control form-control-sm rounded-2 item-desc" data-index="${index}" value="${item.desc}">
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <label class="form-label small fw-semibold text-muted">Qty</label>
-                                <input type="number" class="form-control form-control-sm rounded-2 item-qty" data-index="${index}" value="${item.qty}" min="1">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-semibold text-muted">Unit Price (₹)</label>
-                                <input type="number" class="form-control form-control-sm rounded-2 item-price" data-index="${index}" value="${item.price}" min="0" step="1">
-                            </div>
-                        </div>
-                        ${items.length > 1 ? `<button type="button" class="btn btn-sm text-danger position-absolute top-0 end-0 p-1 remove-row-btn" data-index="${index}" style="right: 10px; top: 10px;"><i class="bi bi-trash"></i></button>` : ''}
-                    </div>
-                `;
-
-                previewTableBody.innerHTML += `
-                    <tr>
-                        <td>${item.desc || '<em>Unnamed item</em>'}</td>
-                        <td class="text-center">${item.qty}</td>
-                        <td class="text-end">₹${Number(item.price).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                        <td class="text-end fw-semibold">₹${itemTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                `;
-            });
-
-            document.getElementById('previewGrandTotal').innerText = `₹${grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-
-            attachEventListeners();
-        }
-
-        function attachEventListeners() {
-            document.querySelectorAll('.item-desc').forEach(input => {
-                input.addEventListener('input', (e) => {
-                    items[e.target.dataset.index].desc = e.target.value;
-                    renderAppOnlyPreview();
-                });
-            });
-            document.querySelectorAll('.item-qty').forEach(input => {
-                input.addEventListener('input', (e) => {
-                    items[e.target.dataset.index].qty = parseFloat(e.target.value) || 0;
-                    renderApp();
-                });
-            });
-            document.querySelectorAll('.item-price').forEach(input => {
-                input.addEventListener('input', (e) => {
-                    items[e.target.dataset.index].price = parseFloat(e.target.value) || 0;
-                    renderApp();
-                });
-            });
-            document.querySelectorAll('.remove-row-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const idx = e.currentTarget.dataset.index;
-                    items.splice(idx, 1);
-                    renderApp();
-                });
-            });
-        }
-
-        function renderAppOnlyPreview() {
-            previewTableBody.innerHTML = '';
-            let grandTotal = 0;
-            items.forEach((item) => {
-                let itemTotal = item.qty * item.price;
-                grandTotal += itemTotal;
-                previewTableBody.innerHTML += `
-                    <tr>
-                        <td>${item.desc || '<em>Unnamed item</em>'}</td>
-                        <td class="text-center">${item.qty}</td>
-                        <td class="text-end">₹${Number(item.price).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                        <td class="text-end fw-semibold">₹${itemTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                `;
-            });
-            document.getElementById('previewGrandTotal').innerText = `₹${grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-        }
-
-        document.getElementById('addRowBtn').addEventListener('click', () => {
-            items.push({ desc: 'New Service Item', qty: 1, price: 1000 });
-            renderApp();
-        });
-
-        // Toggle Business Info Visibility Handler
-        const toggleBtn = document.getElementById('toggleBusinessInfoBtn');
-        const businessInfoFields = document.getElementById('businessInfoFields');
-
-        toggleBtn.addEventListener('click', () => {
-            if (businessInfoFields.style.display === 'none') {
-                businessInfoFields.style.display = 'block';
-                toggleBtn.innerHTML = '<i class="bi bi-eye-slash me-1"></i> Hide Business Info';
-            } else {
-                businessInfoFields.style.display = 'none';
-                toggleBtn.innerHTML = '<i class="bi bi-pencil-square me-1"></i> Edit Business Info';
-            }
-        });
-
-        // Company Details binding
-        document.getElementById('invCompany').addEventListener('input', (e) => {
-            document.getElementById('previewCompany').innerText = e.target.value;
-        });
-        document.getElementById('invAddress').addEventListener('input', (e) => {
-            document.getElementById('previewAddress').innerText = e.target.value;
-        });
-        document.getElementById('invCompanyPhone').addEventListener('input', (e) => {
-            document.getElementById('previewCompanyPhone').innerText = e.target.value;
-        });
-        document.getElementById('invInstagram').addEventListener('input', (e) => {
-            document.getElementById('previewInstagram').innerText = e.target.value;
-            document.getElementById('footerInsta').innerText = e.target.value;
-        });
-        document.getElementById('invNumber').addEventListener('input', (e) => {
-            document.getElementById('previewNumber').innerText = e.target.value;
-        });
-        document.getElementById('invDate').addEventListener('input', (e) => {
-            document.getElementById('previewDate').innerText = e.target.value;
-        });
-
-        // Optional Customer Details handling
-        const clientNameInput = document.getElementById('invClientName');
-        const clientPhoneInput = document.getElementById('invClientPhone');
-        const clientSection = document.getElementById('clientSection');
-        const previewClientName = document.getElementById('previewClientName');
-        const previewClientPhone = document.getElementById('previewClientPhone');
-
-        function updateClientSection() {
-            const nameVal = clientNameInput.value.trim();
-            const phoneVal = clientPhoneInput.value.trim();
-
-            if (nameVal !== '' || phoneVal !== '') {
-                clientSection.style.display = 'block';
-                previewClientName.innerText = nameVal ? nameVal : 'Customer';
-                previewClientPhone.innerText = phoneVal ? `Phone: ${phoneVal}` : '';
-            } else {
-                clientSection.style.display = 'none';
-            }
-        }
-
-        clientNameInput.addEventListener('input', updateClientSection);
-        clientPhoneInput.addEventListener('input', updateClientSection);
-
-        document.getElementById('printBtn').addEventListener('click', () => {
-            window.print();
-        });
-
-        // WhatsApp Share Handler (Flexible sharing to anyone)
-        document.getElementById('whatsappBtn').addEventListener('click', () => {
-            const companyName = document.getElementById('invCompany').value;
-            const companyAddress = document.getElementById('invAddress').value;
-            const companyInsta = document.getElementById('invInstagram').value;
-            const invNumber = document.getElementById('invNumber').value;
-            const invDate = document.getElementById('invDate').value;
-            const clientName = document.getElementById('invClientName').value.trim() || 'Valued Customer';
-            let clientPhone = document.getElementById('invClientPhone').value.trim();
-            
-            // Calculate current total
-            let grandTotal = items.reduce((acc, item) => acc + (item.qty * item.price), 0);
-
-            // Clean up phone number format if provided
-            clientPhone = clientPhone.replace(/[^0-9+]/g, '');
-
-            // Construct message text
-            let message = `Hello *${clientName}*,\n\n`;
-            message += `Here is your invoice *${invNumber}* from *${companyName}* (@${companyInsta}) dated ${invDate}.\n`;
-            message += `Address: ${companyAddress}\n\n`;
-            
-            items.forEach(item => {
-                message += `- ${item.desc} (x${item.qty}): ₹${(item.qty * item.price).toLocaleString('en-IN')}\n`;
-            });
-            
-            message += `\n*Grand Total: ₹${grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}*\n\n`;
-            message += `Thank you for shopping with us! Instagram: @${companyInsta}`;
-
-            // Encode message for URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // If phone is left blank, open general WhatsApp share to choose any contact. If phone is provided, opens direct chat.
-            let whatsappUrl = clientPhone ? `https://wa.me/${clientPhone}?text=${encodedMessage}` : `https://api.whatsapp.com/send?text=${encodedMessage}`;
-            
-            window.open(whatsappUrl, '_blank');
-        });
-
-        renderApp();
-    </script>
+  load();
+  render();
+})();
+</script>
 </body>
 </html>
