@@ -1,0 +1,29 @@
+:root{--brand:#4f46e5;--ink:#1e293b;--muted:#64748b}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,sans-serif;background:#f1f5f9;color:#334155}
+.card{border:0;box-shadow:0 5px 20px #0f172a0b}
+.form-control{border-color:#cbd5e1;padding:.68rem .85rem}
+.form-control:focus{border-color:var(--brand);box-shadow:0 0 0 3px #4f46e51c}
+.invoice-preview{background:#fff;border-radius:14px;border-top:6px solid var(--brand);box-shadow:0 10px 30px #0f172a12}
+.brand-text{color:var(--brand)}
+.item-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:12px}
+.table th{font-size:.75rem;color:#64748b;white-space:nowrap}
+.table td{font-size:.88rem}
+.sticky-preview{position:sticky;top:16px}
+.small-label{font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:991px){.sticky-preview{position:static}}
+@media(max-width:576px){
+ .container{padding-left:12px;padding-right:12px}
+ .invoice-preview{padding:18px!important}
+ .invoice-preview h3{font-size:1.05rem}
+ .invoice-preview .table td,.invoice-preview .table th{padding:.45rem .3rem;font-size:.72rem}
+ .action-btn{padding:.8rem;font-size:.95rem}
+}
+@media print{
+ @page{size:auto;margin:12mm}
+ body{background:#fff!important}
+ body *{visibility:hidden!important}
+ #printable-invoice,#printable-invoice *{visibility:visible!important}
+ #printable-invoice{position:absolute;left:0;top:0;width:100%;border:0!important;border-top:5px solid var(--brand)!important;box-shadow:none!important;border-radius:0!important;padding:0!important}
+ .no-print{display:none!important}
+}
